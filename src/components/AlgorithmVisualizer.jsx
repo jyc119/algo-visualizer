@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as d3 from "d3";
 import { bubbleSort } from "../algorithms/sorting/BubbleSort";
+import { quickSort } from "../algorithms/sorting/QuickSort";
 
 const AlgorithmVisualizer = ({ algorithm }) => {
   const initialData = [10, 3, 15, 7, 8, 23, 74, 18];
@@ -11,6 +12,8 @@ const AlgorithmVisualizer = ({ algorithm }) => {
   useEffect(() => {
     if (algorithm === "bubbleSort") {
       setSteps(bubbleSort(data));
+    } else if (algorithm === "quickSort") {
+      setSteps(quickSort(data));
     }
   }, [algorithm, data]);
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 
-const ExpandableSection = ({ title, children }) => {
+const ExpandableSection = ({ title, items }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => {
@@ -31,9 +31,9 @@ const ExpandableSection = ({ title, children }) => {
       </div>
       {isOpen && (
         <div className="bg-sky-500/75">
-          {React.Children.map(children, (child, index) => (
+          {items.map((item, index) => (
             <div key={index} className="p-3 border-b-4 border-black text-white">
-              <Link to="/sorting/bubble"> {child} </Link>
+              <Link to={item.path}>{item.name}</Link>
             </div>
           ))}
         </div>

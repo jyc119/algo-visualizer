@@ -1,14 +1,14 @@
 import React from "react";
 import ExpandableSection from "../components/ExpandableSection";
 
-const sorting_items = [
-  <div key="1">Bubble Sort</div>,
-  <div key="2">Quick Sort</div>,
-  <div key="3">Merge Sort</div>,
+const sortingAlgorithms = [
+  { name: "Bubble Sort", path: "/sorting/bubble" },
+  { name: "Quick Sort", path: "/sorting/quick" },
+  { name: "Merge Sort", path: "/sorting/merge" },
 ];
 
 const HomePage = () => {
-  return <ExpandableSection title="Sorting" children={sorting_items} />;
+  return <ExpandableSection title="Sorting" items={sortingAlgorithms} />;
 };
 
 export default HomePage;

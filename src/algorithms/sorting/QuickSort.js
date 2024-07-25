@@ -20,7 +20,7 @@ function partition(arr, low, high) {
 }
 
 // The main function that implements QuickSort
-function quickSort(arr, low, high) {
+export function quickSort(arr, low, high) {
   if (low < high) {
     // pi is the partitioning index, arr[pi] is now at the right place
     let pi = partition(arr, low, high);
@@ -30,12 +30,3 @@ function quickSort(arr, low, high) {
     quickSort(arr, pi + 1, high);
   }
 }
-
-// Driver code
-let arr = [10, 7, 8, 9, 1, 5];
-let N = arr.length;
-
-// Function call
-quickSort(arr, 0, N - 1);
-console.log("Sorted array:");
-console.log(arr.join(" "));

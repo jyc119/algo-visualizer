@@ -1,10 +1,6 @@
 // Canvas variables
 var canvas, canvaswidth, canvasheight, ctrl;
 
-// Call canvasElements() to store height width
-// in above canvas variables
-canvasElements();
-
 // 3 array are declared
 
 //1) arr is for storing array element
@@ -76,6 +72,7 @@ function mergeArray(start, end) {
 // effect
 function drawBars(start, end) {
   // Clear previous unsorted bars
+  if (!ctrl) return;
   ctrl.clearRect(0, 0, 1000, 1500);
 
   // Styling of bars
@@ -130,7 +127,6 @@ const mergeSort = async (start, end) => {
 function canvasElements() {
   canvas = document.getElementById("Canvas");
   if (!canvas) return;
-  console.log(canvas);
   canvas.width = 1000;
   canvas.height = 1000;
   canvaswidth = canvas.width;
@@ -140,11 +136,15 @@ function canvasElements() {
 
 // Asynchronous MergeSort function
 export const performer = async () => {
+  canvasElements();
+  if (!canvas) return;
   await mergeSort(0, len_of_arr - 1);
   await drawBars();
 
   // Code for change title1 text
   const title1_changer = document.querySelector(".title1");
-  title1_changer.innerText = "Array is completely sorted";
+  if (title1_changer) {
+    title1_changer.innerText = "Array is completely sorted";
+  }
 };
 performer();

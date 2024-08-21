@@ -13,15 +13,29 @@ var arr = [],
 // Length of unsorted array
 var len_of_arr = 40;
 
-// Store random value in arr[]
-for (var i = 0; i < len_of_arr; i++) {
-  arr.push(Math.round(Math.random() * 250));
-}
+// State to track the current step
+let currentStepResolve;
+let isNextStepClicked = false;
 
-// Initialize itmd and visited array with 0
-for (var i = 0; i < len_of_arr; i++) {
-  itmd.push(0);
-  visited.push(0);
+function initialization() {
+  arr = [];
+  itmd = [];
+  visited = [];
+
+  // Store random value in arr[]
+  for (var i = 0; i < len_of_arr; i++) {
+    arr.push(Math.round(Math.random() * 250));
+  }
+
+  // Initialize itmd and visited array with 0
+  for (var i = 0; i < len_of_arr; i++) {
+    itmd.push(0);
+    visited.push(0);
+  }
+
+  document
+    .getElementById("nextStepButton")
+    .addEventListener("click", handleNextButtonClick);
 }
 
 // Merging of two sub array
@@ -108,17 +122,35 @@ function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// Wait for the next step button click
+function waitForNextStep() {
+  return new Promise((resolve) => {
+    currentStepResolve = resolve;
+  });
+}
+
+// Handle the "Next Step" button click
+function handleNextButtonClick() {
+  if (currentStepResolve) {
+    currentStepResolve();
+    currentStepResolve = null;
+  }
+}
+
 // Merge Sorting
 const mergeSort = async (start, end) => {
   if (start < end) {
     let mid = parseInt((start + end) >> 1);
     await mergeSort(start, mid);
+    await waitForNextStep();
     await mergeSort(mid + 1, end);
+    await waitForNextStep();
     await mergeArray(start, end);
     await drawBars(start, end);
+    await waitForNextStep();
 
     // Waiting time is 800ms
-    await timeout(800);
+    // await timeout(800);
   }
 };
 
@@ -136,6 +168,7 @@ function canvasElements() {
 
 // Asynchronous MergeSort function
 export const performer = async () => {
+  initialization();
   canvasElements();
   if (!canvas) return;
   await mergeSort(0, len_of_arr - 1);
@@ -147,4 +180,7 @@ export const performer = async () => {
     title1_changer.innerText = "Array is completely sorted";
   }
 };
-performer();
+
+export function restart() {
+  performer();
+}

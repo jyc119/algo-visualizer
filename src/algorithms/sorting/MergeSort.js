@@ -11,21 +11,25 @@ var arr = [],
   visited = [];
 
 // Length of unsorted array
-var len_of_arr = 40;
+var len_of_arr = null;
 
 // State to track the current step
 let currentStepResolve;
 let isNextStepClicked = false;
 
-function initialization() {
+function initialization(input_arr) {
   arr = [];
   itmd = [];
   visited = [];
 
   // Store random value in arr[]
-  for (var i = 0; i < len_of_arr; i++) {
-    arr.push(Math.round(Math.random() * 250));
-  }
+  // for (var i = 0; i < len_of_arr; i++) {
+  //   arr.push(Math.round(Math.random() * 250));
+  // }
+
+  arr = input_arr;
+  console.log(input_arr.length);
+  len_of_arr = input_arr.length;
 
   // Initialize itmd and visited array with 0
   for (var i = 0; i < len_of_arr; i++) {
@@ -33,9 +37,9 @@ function initialization() {
     visited.push(0);
   }
 
-  document
-    .getElementById("nextStepButton")
-    .addEventListener("click", handleNextButtonClick);
+  // document
+  //   .getElementById("nextStepButton")
+  //   .addEventListener("click", handleNextButtonClick);
 }
 
 // Merging of two sub array
@@ -89,6 +93,17 @@ function drawBars(start, end) {
   if (!ctrl) return;
   ctrl.clearRect(0, 0, 1000, 1500);
 
+  const barWidth = 40; // Width of each bar
+  const maxBarHeight = 300; // Maximum height for bars
+  const barSpacing = 10; // Space between bars
+  const bottomMargin = 200; // Space at the bottom of the bars
+
+  // Calculate the total width of all bars including spacing
+  const totalWidth = len_of_arr * (barWidth + barSpacing) - barSpacing;
+
+  // Calculate the starting x position to center the bars
+  const startX = (canvaswidth - totalWidth) / 2;
+
   // Styling of bars
   for (let i = 0; i < len_of_arr; i++) {
     // Changing styles of bars
@@ -98,21 +113,36 @@ function drawBars(start, end) {
     ctrl.shadowBlur = 3;
     ctrl.shadowOffsetY = 5;
 
-    // Size of rectangle of bars
-    ctrl.fillRect(25 * i, 300 - arr[i], 20, arr[i]);
+    // Calculate the height of each bar proportional to maxBarHeight
+    const barHeight = (arr[i] / Math.max(...arr)) * maxBarHeight;
+
+    // Size and position of rectangle for bars
+    const xPosition = startX + i * (barWidth + barSpacing);
+    const yPosition = canvasheight - barHeight - bottomMargin;
+
+    ctrl.fillRect(xPosition, yPosition, barWidth, barHeight);
 
     if (visited[i]) {
       ctrl.fillStyle = "#006d13";
-      ctrl.fillRect(25 * i, 300 - arr[i], 20, arr[i]);
+      ctrl.fillRect(xPosition, yPosition, barWidth, barHeight);
       ctrl.shadowOffsetX = 2;
     }
   }
 
   for (let i = start; i <= end; i++) {
+    const xPosition = startX + i * (barWidth + barSpacing);
+    const yPosition =
+      canvasheight - (arr[i] / Math.max(...arr)) * maxBarHeight - bottomMargin;
+
     ctrl.fillStyle = "orange";
-    ctrl.fillRect(25 * i, 300 - arr[i], 18, arr[i]);
+    ctrl.fillRect(
+      xPosition,
+      yPosition,
+      barWidth - 2,
+      (arr[i] / Math.max(...arr)) * maxBarHeight
+    );
     ctrl.fillStyle = "#cdff6c";
-    ctrl.fillRect(25 * i, 300, 18, arr[i]);
+    ctrl.fillRect(xPosition, canvasheight, barWidth - 2, 18);
     visited[i] = 1;
   }
 }
@@ -130,7 +160,7 @@ function waitForNextStep() {
 }
 
 // Handle the "Next Step" button click
-function handleNextButtonClick() {
+export function nextStep() {
   if (currentStepResolve) {
     currentStepResolve();
     currentStepResolve = null;
@@ -142,15 +172,10 @@ const mergeSort = async (start, end) => {
   if (start < end) {
     let mid = parseInt((start + end) >> 1);
     await mergeSort(start, mid);
-    await waitForNextStep();
     await mergeSort(mid + 1, end);
-    await waitForNextStep();
     await mergeArray(start, end);
     await drawBars(start, end);
     await waitForNextStep();
-
-    // Waiting time is 800ms
-    // await timeout(800);
   }
 };
 
@@ -167,20 +192,14 @@ function canvasElements() {
 }
 
 // Asynchronous MergeSort function
-export const performer = async () => {
-  initialization();
+export const performer = async (data) => {
+  initialization(data);
   canvasElements();
   if (!canvas) return;
   await mergeSort(0, len_of_arr - 1);
   await drawBars();
-
-  // Code for change title1 text
-  const title1_changer = document.querySelector(".title1");
-  if (title1_changer) {
-    title1_changer.innerText = "Array is completely sorted";
-  }
 };
 
-export function restart() {
-  performer();
+export function restart(data) {
+  performer(data);
 }

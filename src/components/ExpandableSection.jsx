@@ -1,17 +1,23 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 
-const ExpandableSection = ({ title, items }) => {
+const ExpandableSection = ({ title, items, page }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
+
+    // If page is present and the section is being opened, navigate to the page
+    if (page && !isOpen) {
+      console.log("here");
+      console.log(page);
+      <Link to={page}></Link>;
+    }
   };
 
   return (
-    <section className=" bg-blue-400 mb-4">
+    <section className="bg-blue-400">
       <div
         className={classNames(
           "flex p-4 justify-between items-center cursor-pointer",
@@ -29,15 +35,19 @@ const ExpandableSection = ({ title, items }) => {
           {isOpen ? "Hide" : "Show"}
         </button>
       </div>
-      {isOpen && (
-        <div className="bg-sky-500/75">
-          {items.map((item, index) => (
-            <div key={index} className="p-3 border-b-4 border-black text-white">
-              <Link to={item.path}>{item.name}</Link>
-            </div>
-          ))}
-        </div>
-      )}
+      {!page &&
+        isOpen && ( // Only display items if page is not present
+          <div className="bg-sky-500/75">
+            {items.map((item, index) => (
+              <div
+                key={index}
+                className="p-3 border-b-4 border-black text-white"
+              >
+                <Link to={item.path}>{item.name}</Link>
+              </div>
+            ))}
+          </div>
+        )}
     </section>
   );
 };

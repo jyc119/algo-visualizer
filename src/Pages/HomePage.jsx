@@ -8,7 +8,16 @@ const sortingAlgorithms = [
 ];
 
 const HomePage = () => {
-  return <ExpandableSection title="Sorting" items={sortingAlgorithms} />;
+  return (
+    <div>
+      <ExpandableSection
+        title="Sorting"
+        items={sortingAlgorithms}
+        page={false}
+      />
+      <ExpandableSection title="Trees" page="/Pages/TreePage" />
+    </div>
+  );
 };
 
 export default HomePage;

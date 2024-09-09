@@ -9,6 +9,7 @@ import MainLayout from "./layouts/MainLayout";
 import BubbleSort from "./Pages/BubbleSort";
 import QuickSort from "./Pages/QuickSort";
 import MergeSortVisualizer from "./components/MergeSortVisualizer";
+import TreePage from "./Pages/TreePage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -17,6 +18,7 @@ const router = createBrowserRouter(
       <Route path="/sorting/bubble" element={<BubbleSort />} />
       <Route path="/sorting/quick" element={<QuickSort />} />
       <Route path="/sorting/merge" element={<MergeSortVisualizer />} />
+      <Route path="/Pages/TreePage" element={<TreePage />} />
     </Route>
   )
 );

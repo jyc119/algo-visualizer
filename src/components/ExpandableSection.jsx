@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 const ExpandableSection = ({ title, items, page }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -12,7 +13,7 @@ const ExpandableSection = ({ title, items, page }) => {
     if (page && !isOpen) {
       console.log("here");
       console.log(page);
-      <Link to={page}></Link>;
+      navigate(page);
     }
   };
 

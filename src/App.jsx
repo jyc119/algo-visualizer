@@ -10,6 +10,7 @@ import BubbleSort from "./Pages/BubbleSort";
 import QuickSort from "./Pages/QuickSort";
 import MergeSortVisualizer from "./components/MergeSortVisualizer";
 import TreePage from "./Pages/TreePage";
+// import "./styles/App.css";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
